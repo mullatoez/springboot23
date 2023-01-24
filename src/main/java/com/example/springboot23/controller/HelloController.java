@@ -13,4 +13,10 @@ public class HelloController {
     public ResponseEntity<String> HelloWorld() {
         return ResponseEntity.ok("Welcome to Spring Boot 2023");
     }
+
+    @GetMapping("/calvin")
+    public String welcomeCalvin(){
+        return "Welcome Calvin";
+    }
+
 }

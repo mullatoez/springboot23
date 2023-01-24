@@ -21,14 +21,21 @@ public class BookController {
     private final BookService service;
     private final BookRepository repository;
 
-    @PostMapping("/books")
+    //CRUD ---
+    //POST PostMapping -- Creating new records/data
+    //GET GetMapping
+    //PUT PutMapping -- Updating
+    //DELETE DeleteMapping
+
+
+    @PostMapping("/book")
     public ResponseEntity<Book> saveBook(@Valid @RequestBody Book book) {
         return ResponseEntity.ok(service.saveBook(book));
     }
 
-    @GetMapping("/list") //GET,DELETE,POST,PUT
+    @GetMapping("/booksList") //GET,DELETE,POST,PUT
     public List<Book> fetchBooks() {
-        log.info("Fetching books...... ");
+        log.info("Fetching books...... "); //logs observation
         return service.fetchBooks();
     }
 
