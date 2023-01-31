@@ -18,34 +18,46 @@ public class PokemonController {
     private PokemonService pokemonService;
 
     @Autowired
-    public PokemonController(PokemonService service){
+    public PokemonController(PokemonService service) {
         this.pokemonService = service;
     }
 
     @GetMapping("pokemon")
-    public ResponseEntity<List<Pokemon>> getPokemons(){
+    public ResponseEntity<List<Pokemon>> getPokemons() {
         List<Pokemon> pokemons = new ArrayList<>();
-        pokemons.add(new Pokemon(1,"Pokemon 1","Alligator"));
-        pokemons.add(new Pokemon(2,"Pokemon 2","Ice Cube"));
-        pokemons.add(new Pokemon(3,"Pokemon 3","Water"));
-        pokemons.add(new Pokemon(4,"Pokemon 4","Fire"));
+        pokemons.add(new Pokemon(1, "Pokemon 1", "Alligator"));
+        pokemons.add(new Pokemon(2, "Pokemon 2", "Ice Cube"));
+        pokemons.add(new Pokemon(3, "Pokemon 3", "Water"));
+        pokemons.add(new Pokemon(4, "Pokemon 4", "Fire"));
 
         return ResponseEntity.ok(pokemons);
     }
 
     @DeleteMapping("pokemon/{id}/delete")
-    public ResponseEntity<String> deletePokemon(@PathVariable("id") int pokemonId){
-        System.out.println(pokemonId);
-        return ResponseEntity.ok("Pokemon id " + pokemonId + "deleted successfully");
+    public ResponseEntity<String> deletePokemon(@PathVariable int id) {
+        System.out.println(id);
+        return ResponseEntity.ok("Pokemon id " + id + "deleted successfully");
     }
 
     @PostMapping("create")
-    public ResponseEntity<PokemonDTO> createPokemon(@RequestBody PokemonDTO pokemonDTO){
+    public ResponseEntity<PokemonDTO> createPokemon(@RequestBody PokemonDTO pokemonDTO) {
         return ResponseEntity.ok(pokemonService.createPokemon(pokemonDTO));
     }
 
     @GetMapping("pokemons")
-    public ResponseEntity<List<PokemonDTO>> getAllPokemons(){
+    public ResponseEntity<List<PokemonDTO>> getAllPokemons() {
         return ResponseEntity.of(Optional.ofNullable(pokemonService.getPokemons()));
+    }
+
+    @GetMapping("pokemon/{id}")
+    public ResponseEntity<PokemonDTO> getPokemonById(@PathVariable("id") int id) {
+        return ResponseEntity.ok(pokemonService.getPokemonById(id));
+    }
+
+    @PutMapping("pokemon/update/{id}")
+    public ResponseEntity<PokemonDTO> updatePokemon(@PathVariable int id,
+                                                    @RequestBody PokemonDTO pokemonDTO) {
+
+        return ResponseEntity.ok(pokemonService.updatePokemon(pokemonDTO, id));
     }
 }
