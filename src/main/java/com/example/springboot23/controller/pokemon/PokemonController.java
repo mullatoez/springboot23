@@ -24,17 +24,6 @@ public class PokemonController {
         this.pokemonService = service;
     }
 
-    @GetMapping("pokemon")
-    public ResponseEntity<List<Pokemon>> getPokemons() {
-        List<Pokemon> pokemons = new ArrayList<>();
-        pokemons.add(new Pokemon(1, "Pokemon 1", "Alligator"));
-        pokemons.add(new Pokemon(2, "Pokemon 2", "Ice Cube"));
-        pokemons.add(new Pokemon(3, "Pokemon 3", "Water"));
-        pokemons.add(new Pokemon(4, "Pokemon 4", "Fire"));
-
-        return ResponseEntity.ok(pokemons);
-    }
-
     @DeleteMapping("pokemon/{id}/delete")
     public ResponseEntity<String> deletePokemon(@PathVariable int id) {
         System.out.println(id);
