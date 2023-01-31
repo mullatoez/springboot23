@@ -7,6 +7,7 @@ import com.example.springboot23.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class BookController {
 
 
     @PostMapping("/book")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Book> saveBook(@Valid @RequestBody Book book) {
         return ResponseEntity.ok(service.saveBook(book));
     }
