@@ -2,10 +2,14 @@ package com.example.springboot23.service.pokemon.implementation;
 
 import com.example.springboot23.dto.pokemon.PokemonDTO;
 import com.example.springboot23.entity.pokemon.Pokemon;
+import com.example.springboot23.entity.pokemon.PokemonResponse;
 import com.example.springboot23.exception.PokemonNotFoundException;
 import com.example.springboot23.repository.pokemon.PokemonRepository;
 import com.example.springboot23.service.pokemon.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +17,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class PokemonImplementation implements PokemonService {
-
 
     private PokemonRepository pokemonRepository;
 
@@ -38,9 +41,22 @@ public class PokemonImplementation implements PokemonService {
     }
 
     @Override
-    public List<PokemonDTO> getPokemons() {
-        var pokemons = pokemonRepository.findAll();
-        return pokemons.stream().map(this::mapPokemoneToDTO).collect(Collectors.toList());
+    public PokemonResponse getPokemons(int pageNo, int pageSize) {
+
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<Pokemon> pokemonPage = pokemonRepository.findAll(pageable);
+        List<Pokemon> pokemons = pokemonPage.getContent();
+        List<PokemonDTO> content = pokemons.stream().map(this::mapPokemoneToDTO).collect(Collectors.toList());
+
+        PokemonResponse response = new PokemonResponse();
+        response.setData(content);
+        response.setPageNo(pokemonPage.getNumber());
+        response.setPageSize(pokemonPage.getSize());
+        response.setTotalElements(pokemonPage.getTotalElements());
+        response.setTotalPages(pokemonPage.getTotalPages());
+        response.setLast(pokemonPage.isLast());
+
+        return response;
     }
 
     @Override

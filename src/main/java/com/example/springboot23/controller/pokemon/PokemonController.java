@@ -2,6 +2,7 @@ package com.example.springboot23.controller.pokemon;
 
 import com.example.springboot23.dto.pokemon.PokemonDTO;
 import com.example.springboot23.entity.pokemon.Pokemon;
+import com.example.springboot23.entity.pokemon.PokemonResponse;
 import com.example.springboot23.service.pokemon.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,8 +47,11 @@ public class PokemonController {
     }
 
     @GetMapping("pokemons")
-    public ResponseEntity<List<PokemonDTO>> getAllPokemons() {
-        return ResponseEntity.of(Optional.ofNullable(pokemonService.getPokemons()));
+    public ResponseEntity<PokemonResponse> getAllPokemons(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
+    ) {
+        return new ResponseEntity<>(pokemonService.getPokemons(pageNo, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("pokemon/{id}")
@@ -63,7 +67,7 @@ public class PokemonController {
     }
 
     @DeleteMapping("pokemon/{id}")
-    public ResponseEntity<String> deletePokemonById(@PathVariable int id){
+    public ResponseEntity<String> deletePokemonById(@PathVariable int id) {
         pokemonService.deletePokemonById(id);
         return new ResponseEntity<>("Pokemon deleted successfully", HttpStatus.OK);
     }
