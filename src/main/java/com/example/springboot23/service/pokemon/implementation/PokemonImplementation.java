@@ -63,6 +63,11 @@ public class PokemonImplementation implements PokemonService {
         return mapPokemoneToDTO(updatePokemon);
     }
 
+    @Override
+    public void deletePokemonById(int id) {
+        pokemonRepository.deleteById(id);
+    }
+
     private PokemonDTO mapPokemoneToDTO(Pokemon pokemon) {
         PokemonDTO pokemonDTO = new PokemonDTO();
         pokemonDTO.setId(pokemon.getId());
@@ -77,5 +82,11 @@ public class PokemonImplementation implements PokemonService {
         pokemon.setType(pokemonDTO.getType());
 
         return pokemon;
+    }
+
+    @Override
+    public void deletePokemon(int id) {
+        Pokemon pokemon = pokemonRepository.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon not found"));
+        pokemonRepository.delete(pokemon);
     }
 }

@@ -4,6 +4,7 @@ import com.example.springboot23.dto.pokemon.PokemonDTO;
 import com.example.springboot23.entity.pokemon.Pokemon;
 import com.example.springboot23.service.pokemon.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,5 +60,11 @@ public class PokemonController {
                                                     @RequestBody PokemonDTO pokemonDTO) {
 
         return ResponseEntity.ok(pokemonService.updatePokemon(pokemonDTO, id));
+    }
+
+    @DeleteMapping("pokemon/{id}")
+    public ResponseEntity<String> deletePokemonById(@PathVariable int id){
+        pokemonService.deletePokemonById(id);
+        return new ResponseEntity<>("Pokemon deleted successfully", HttpStatus.OK);
     }
 }
